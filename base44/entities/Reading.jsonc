@@ -1,0 +1,68 @@
+{
+  "name": "Reading",
+  "type": "object",
+  "properties": {
+    "site_id": {
+      "type": "string",
+      "description": "Parent site id"
+    },
+    "sensor_id": {
+      "type": "string",
+      "description": "Sensor entity id"
+    },
+    "external_id": {
+      "type": "string",
+      "description": "Physical device id"
+    },
+    "metric": {
+      "type": "string"
+    },
+    "zone": {
+      "type": "string"
+    },
+    "value": {
+      "type": "number"
+    },
+    "unit": {
+      "type": "string"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "site_id",
+    "metric",
+    "value"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "data.site_id": "{{user.data.site_id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

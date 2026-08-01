@@ -1,0 +1,98 @@
+{
+  "name": "Command",
+  "type": "object",
+  "properties": {
+    "site_id": {
+      "type": "string",
+      "description": "Parent site id"
+    },
+    "automation_id": {
+      "type": "string",
+      "description": "Automation rule that issued this command (if any)"
+    },
+    "target": {
+      "type": "string",
+      "enum": [
+        "irrigation",
+        "valve",
+        "pump",
+        "tracker",
+        "vent",
+        "fan",
+        "fogger",
+        "lighting",
+        "notification"
+      ],
+      "default": "irrigation"
+    },
+    "zone": {
+      "type": "string"
+    },
+    "action": {
+      "type": "string",
+      "description": "What the gateway should do, e.g. 'Open valve V1 for 20 min'"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending_approval",
+        "queued",
+        "sent",
+        "completed",
+        "failed",
+        "rejected"
+      ],
+      "default": "queued"
+    },
+    "issued_by": {
+      "type": "string",
+      "description": "'automation' or the user email that dispatched it"
+    },
+    "result_message": {
+      "type": "string",
+      "description": "Result reported back by the gateway"
+    },
+    "water_liters": {
+      "type": "number",
+      "description": "Litres of water delivered (reported by gateway or estimated from run duration)"
+    },
+    "executed_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "site_id",
+    "target",
+    "action"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "data.site_id": "{{user.data.site_id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

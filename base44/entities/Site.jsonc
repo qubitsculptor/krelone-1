@@ -1,0 +1,108 @@
+{
+  "name": "Site",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Site name"
+    },
+    "location": {
+      "type": "string",
+      "description": "City / region, country"
+    },
+    "latitude": {
+      "type": "number",
+      "description": "Geocoded latitude for weather lookups"
+    },
+    "longitude": {
+      "type": "number",
+      "description": "Geocoded longitude for weather lookups"
+    },
+    "description": {
+      "type": "string"
+    },
+    "total_area_hectares": {
+      "type": "number"
+    },
+    "pv_capacity_kw": {
+      "type": "number",
+      "description": "Total installed PV capacity"
+    },
+    "grid_connection": {
+      "type": "string",
+      "enum": [
+        "on_grid",
+        "off_grid",
+        "hybrid"
+      ],
+      "default": "on_grid"
+    },
+    "timezone": {
+      "type": "string"
+    },
+    "api_key": {
+      "type": "string",
+      "description": "Secret key gateways use to push telemetry for this site",
+      "rls": {
+        "read": {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        "write": {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      }
+    },
+    "member_emails": {
+      "type": "array",
+      "description": "Operator emails granted access to this site (tenant membership)",
+      "items": {
+        "type": "string"
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "provisioning",
+        "active",
+        "paused"
+      ],
+      "default": "active"
+    }
+  },
+  "required": [
+    "name"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "data.member_emails": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

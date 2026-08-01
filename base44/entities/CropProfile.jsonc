@@ -1,0 +1,167 @@
+{
+  "name": "CropProfile",
+  "type": "object",
+  "properties": {
+    "crop": {
+      "type": "string",
+      "description": "Crop name, matched against Zone.crop (case-insensitive)"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "vegetable",
+        "leafy_green",
+        "fruit",
+        "spice",
+        "tuber",
+        "other"
+      ],
+      "default": "vegetable"
+    },
+    "shade_tolerance": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "default": "medium",
+      "description": "Suitability for growing under PV panels"
+    },
+    "moisture_min": {
+      "type": "number",
+      "description": "Soil moisture % lower bound \u2014 below triggers irrigation"
+    },
+    "moisture_max": {
+      "type": "number",
+      "description": "Soil moisture % upper bound \u2014 above triggers stop-irrigation"
+    },
+    "soil_temp_min": {
+      "type": "number",
+      "description": "\u00b0C"
+    },
+    "soil_temp_max": {
+      "type": "number",
+      "description": "\u00b0C"
+    },
+    "air_temp_min": {
+      "type": "number",
+      "description": "\u00b0C"
+    },
+    "air_temp_max": {
+      "type": "number",
+      "description": "\u00b0C \u2014 above triggers tracker shading"
+    },
+    "humidity_min": {
+      "type": "number",
+      "description": "Relative humidity %"
+    },
+    "humidity_max": {
+      "type": "number",
+      "description": "Relative humidity % \u2014 above triggers airflow commands"
+    },
+    "par_max": {
+      "type": "number",
+      "description": "PAR (\u00b5mol/m\u00b2/s) above which tracker shading is recommended"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "stage_light_targets": {
+      "type": "array",
+      "description": "Per-growth-stage light requirements driving the tracker optimizer",
+      "items": {
+        "type": "object",
+        "properties": {
+          "stage": {
+            "type": "string",
+            "enum": [
+              "seeding",
+              "vegetative",
+              "flowering",
+              "fruiting",
+              "harvest"
+            ]
+          },
+          "dli_target": {
+            "type": "number",
+            "description": "Daily Light Integral target (mol/m\u00b2/day) for this stage"
+          },
+          "light_sensitivity": {
+            "type": "string",
+            "enum": [
+              "low",
+              "medium",
+              "high"
+            ],
+            "default": "medium",
+            "description": "How strongly yield responds to light at this stage \u2014 high shifts the optimizer toward crop priority"
+          },
+          "notes": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "stage",
+          "dli_target"
+        ]
+      }
+    },
+    "disease_rules": {
+      "type": "array",
+      "description": "Disease risk conditions evaluated against live sensor data",
+      "items": {
+        "type": "object",
+        "properties": {
+          "disease": {
+            "type": "string"
+          },
+          "humidity_above": {
+            "type": "number",
+            "description": "RH % at or above which risk applies"
+          },
+          "air_temp_min": {
+            "type": "number"
+          },
+          "air_temp_max": {
+            "type": "number"
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "critical",
+              "high",
+              "medium",
+              "low"
+            ],
+            "default": "medium"
+          },
+          "advisory": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "crop"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": true,
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

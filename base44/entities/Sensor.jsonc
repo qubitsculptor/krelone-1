@@ -1,0 +1,106 @@
+{
+  "name": "Sensor",
+  "type": "object",
+  "properties": {
+    "site_id": {
+      "type": "string",
+      "description": "Parent site id"
+    },
+    "name": {
+      "type": "string"
+    },
+    "external_id": {
+      "type": "string",
+      "description": "Physical device id / serial used by the gateway when pushing readings"
+    },
+    "metric": {
+      "type": "string",
+      "enum": [
+        "soil_moisture",
+        "soil_temp",
+        "soil_ec",
+        "ph",
+        "par",
+        "air_temp",
+        "humidity",
+        "wind",
+        "rain",
+        "co2",
+        "water_flow",
+        "energy",
+        "inverter",
+        "tracker"
+      ],
+      "default": "soil_moisture"
+    },
+    "zone": {
+      "type": "string",
+      "description": "Zone name"
+    },
+    "protocol": {
+      "type": "string",
+      "enum": [
+        "MQTT",
+        "Modbus",
+        "OPC-UA",
+        "HTTP",
+        "LoRaWAN",
+        "Zigbee",
+        "BLE"
+      ],
+      "default": "MQTT"
+    },
+    "value": {
+      "type": "number"
+    },
+    "unit": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "online",
+        "degraded",
+        "offline"
+      ],
+      "default": "online"
+    },
+    "last_reading": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "name",
+    "metric"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "data.site_id": "{{user.data.site_id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "name": "User",
+  "type": "object",
+  "properties": {
+    "site_id": {
+      "type": "string",
+      "description": "Site this operator is assigned to \u2014 scopes all data visibility for non-admin users"
+    }
+  }
+}

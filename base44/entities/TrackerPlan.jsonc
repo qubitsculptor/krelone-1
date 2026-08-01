@@ -1,0 +1,113 @@
+{
+  "name": "TrackerPlan",
+  "type": "object",
+  "properties": {
+    "site_id": {
+      "type": "string",
+      "description": "Parent site id"
+    },
+    "zone": {
+      "type": "string",
+      "description": "Zone name this plan applies to"
+    },
+    "crop": {
+      "type": "string"
+    },
+    "growth_stage": {
+      "type": "string"
+    },
+    "strategy": {
+      "type": "string",
+      "enum": [
+        "maximize_energy",
+        "balanced",
+        "crop_light_priority",
+        "heat_protection"
+      ],
+      "default": "balanced"
+    },
+    "action": {
+      "type": "string",
+      "description": "The tracker instruction issued, e.g. 'Track sun normally' or 'Offset +12\u00b0 after 13:00 for shading'"
+    },
+    "reasoning": {
+      "type": "array",
+      "description": "Human-readable factors behind the decision",
+      "items": {
+        "type": "string"
+      }
+    },
+    "crop_weight": {
+      "type": "number",
+      "description": "Effective crop priority (0-100) used for this decision, after stage-sensitivity adjustment"
+    },
+    "dli_so_far": {
+      "type": "number",
+      "description": "Estimated Daily Light Integral accumulated today (mol/m\u00b2)"
+    },
+    "dli_projected": {
+      "type": "number",
+      "description": "Projected end-of-day DLI (mol/m\u00b2)"
+    },
+    "dli_target": {
+      "type": "number",
+      "description": "Stage DLI target (mol/m\u00b2/day)"
+    },
+    "heat_risk": {
+      "type": "string",
+      "enum": [
+        "none",
+        "moderate",
+        "high"
+      ],
+      "default": "none"
+    },
+    "forecast_max_temp": {
+      "type": "number",
+      "description": "\u00b0C forecast max for today"
+    },
+    "command_created": {
+      "type": "boolean",
+      "default": false
+    },
+    "computed_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "site_id",
+    "zone",
+    "strategy",
+    "action"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "data.site_id": "{{user.data.site_id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

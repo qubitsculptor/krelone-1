@@ -1,0 +1,45 @@
+{
+  "name": "Sensor Health Watchdog",
+  "definition": {
+    "document": {
+      "dsl": "1.0.0",
+      "name": "sensor_health_watchdog",
+      "version": "1.0",
+      "namespace": "base44"
+    },
+    "do": [
+      {
+        "check_sensors": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "checkSensorHealth",
+            "args": {}
+          },
+          "then": "end",
+          "x-base44": {
+            "title": "Check sensor health",
+            "description": "Mark stale sensors offline"
+          }
+        }
+      }
+    ]
+  },
+  "description": "Every 15 minutes, marks sensors offline when they stop reporting, raises communication alerts, and emails admins.",
+  "trigger": {
+    "condition": null,
+    "config": {
+      "trigger_type": "scheduled",
+      "events": [],
+      "schedule_mode": "recurring",
+      "cron_expression": "*/15 * * * *",
+      "one_time_date": null,
+      "timezone": "Asia/Calcutta",
+      "interval_value": null,
+      "interval_unit": null,
+      "interval_anchor": null,
+      "ends_type": "never",
+      "ends_on_date": null,
+      "ends_after_count": null
+    }
+  }
+}

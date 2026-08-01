@@ -1,0 +1,107 @@
+{
+  "name": "Recommendation",
+  "type": "object",
+  "properties": {
+    "site_id": {
+      "type": "string",
+      "description": "Parent site id"
+    },
+    "problem": {
+      "type": "string"
+    },
+    "cause": {
+      "type": "string"
+    },
+    "action": {
+      "type": "string"
+    },
+    "expected_benefit": {
+      "type": "string"
+    },
+    "estimated_savings": {
+      "type": "string"
+    },
+    "confidence": {
+      "type": "number",
+      "description": "0-100"
+    },
+    "priority": {
+      "type": "string",
+      "enum": [
+        "urgent",
+        "high",
+        "medium",
+        "low"
+      ],
+      "default": "medium"
+    },
+    "domain": {
+      "type": "string",
+      "enum": [
+        "crop",
+        "energy",
+        "water",
+        "maintenance",
+        "integrated"
+      ],
+      "default": "crop"
+    },
+    "zone": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "accepted",
+        "dismissed",
+        "executed"
+      ],
+      "default": "pending"
+    },
+    "automatable": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "problem",
+    "action"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "data.site_id": "{{user.data.site_id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.site_id": "{{user.data.site_id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

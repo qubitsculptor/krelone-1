@@ -1,0 +1,45 @@
+{
+  "name": "Tracker Optimizer",
+  "definition": {
+    "document": {
+      "dsl": "1.0.0",
+      "name": "tracker_optimizer",
+      "version": "1.0",
+      "namespace": "base44"
+    },
+    "do": [
+      {
+        "run_optimizer": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "optimizeTrackers",
+            "args": {}
+          },
+          "then": "end",
+          "x-base44": {
+            "title": "Optimize trackers",
+            "description": "All active sites"
+          }
+        }
+      }
+    ]
+  },
+  "description": "Runs the multi-objective tracker policy engine for all active sites every 3 hours during daylight, balancing crop light needs against energy output.",
+  "trigger": {
+    "condition": null,
+    "config": {
+      "trigger_type": "scheduled",
+      "events": [],
+      "schedule_mode": "recurring",
+      "cron_expression": "0 6-18/3 * * *",
+      "one_time_date": null,
+      "timezone": "Asia/Calcutta",
+      "interval_value": null,
+      "interval_unit": null,
+      "interval_anchor": null,
+      "ends_type": "never",
+      "ends_on_date": null,
+      "ends_after_count": null
+    }
+  }
+}

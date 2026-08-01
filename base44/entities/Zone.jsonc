@@ -1,0 +1,121 @@
+{
+  "name": "Zone",
+  "type": "object",
+  "properties": {
+    "site_id": {
+      "type": "string",
+      "description": "Parent site id"
+    },
+    "name": {
+      "type": "string",
+      "description": "Zone name e.g. Zone A"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "crop",
+        "solar",
+        "mixed"
+      ],
+      "default": "mixed"
+    },
+    "crop": {
+      "type": "string",
+      "description": "Primary crop if agricultural"
+    },
+    "growth_stage": {
+      "type": "string",
+      "enum": [
+        "seeding",
+        "vegetative",
+        "flowering",
+        "fruiting",
+        "harvest"
+      ],
+      "default": "vegetative"
+    },
+    "area_hectares": {
+      "type": "number"
+    },
+    "health_score": {
+      "type": "number",
+      "description": "0-100 crop/asset health"
+    },
+    "soil_moisture": {
+      "type": "number",
+      "description": "percent"
+    },
+    "soil_temp": {
+      "type": "number"
+    },
+    "par": {
+      "type": "number",
+      "description": "photosynthetically active radiation"
+    },
+    "tracker_angle": {
+      "type": "number"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "optimal",
+        "attention",
+        "critical"
+      ],
+      "default": "optimal"
+    },
+    "crop_priority": {
+      "type": "number",
+      "description": "0-100 optimizer weighting: 0 = maximize energy, 100 = maximize crop yield. Default 50 (balanced).",
+      "default": 50
+    },
+    "moisture_target_min": {
+      "type": "number",
+      "description": "percent"
+    },
+    "moisture_target_max": {
+      "type": "number",
+      "description": "percent"
+    },
+    "temp_target_min": {
+      "type": "number",
+      "description": "\u00b0C"
+    },
+    "temp_target_max": {
+      "type": "number",
+      "description": "\u00b0C"
+    }
+  },
+  "required": [
+    "name"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "data.site_id": "{{user.data.site_id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

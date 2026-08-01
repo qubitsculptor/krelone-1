@@ -1,0 +1,87 @@
+{
+  "name": "EnergyAsset",
+  "type": "object",
+  "properties": {
+    "site_id": {
+      "type": "string",
+      "description": "Parent site id"
+    },
+    "name": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "inverter",
+        "string",
+        "tracker",
+        "meter"
+      ],
+      "default": "inverter"
+    },
+    "zone": {
+      "type": "string"
+    },
+    "capacity_kw": {
+      "type": "number"
+    },
+    "current_output_kw": {
+      "type": "number"
+    },
+    "performance_ratio": {
+      "type": "number",
+      "description": "0-100"
+    },
+    "health": {
+      "type": "number",
+      "description": "0-100"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "online",
+        "underperforming",
+        "fault",
+        "offline"
+      ],
+      "default": "online"
+    },
+    "soiling_loss": {
+      "type": "number",
+      "description": "percent"
+    }
+  },
+  "required": [
+    "name",
+    "type"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "data.site_id": "{{user.data.site_id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

@@ -1,0 +1,120 @@
+{
+  "name": "CropScan",
+  "type": "object",
+  "properties": {
+    "site_id": {
+      "type": "string",
+      "description": "Parent site id"
+    },
+    "camera_id": {
+      "type": "string",
+      "description": "Physical camera id that captured the frame"
+    },
+    "zone": {
+      "type": "string",
+      "description": "Zone the camera monitors"
+    },
+    "image_url": {
+      "type": "string",
+      "description": "Stored image URL"
+    },
+    "healthy": {
+      "type": "boolean",
+      "description": "True if AI found no issues"
+    },
+    "summary": {
+      "type": "string",
+      "description": "One-line AI summary of the frame"
+    },
+    "trend": {
+      "type": "string",
+      "description": "AI progression note comparing this frame against previous scans of the same zone (e.g. 'yellowing spread from ~5% to ~14% of canopy')"
+    },
+    "findings": {
+      "type": "array",
+      "description": "Issues detected by the vision model",
+      "items": {
+        "type": "object",
+        "properties": {
+          "issue": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "disease",
+              "pest",
+              "water_stress",
+              "nutrient_deficiency",
+              "physical_damage",
+              "equipment",
+              "other"
+            ],
+            "default": "other"
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "critical",
+              "high",
+              "medium",
+              "low"
+            ],
+            "default": "medium"
+          },
+          "confidence": {
+            "type": "number",
+            "description": "0-100"
+          },
+          "description": {
+            "type": "string"
+          },
+          "recommended_action": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "alert_created": {
+      "type": "boolean",
+      "default": false
+    },
+    "captured_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "site_id",
+    "image_url"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "data.site_id": "{{user.data.site_id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
